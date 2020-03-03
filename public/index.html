@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+
+        <script>
+
+            readAll();
+
+            async function readAll()
+            {
+                const read = await fetch('/article');
+                const readToJson = await read.json();
+
+                console.log(readToJson);
+            }
+        </script>
+    </body>
+</html>
