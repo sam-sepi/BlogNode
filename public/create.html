@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+
+        <script>
+            writePost();
+
+            async function writePost()
+            {
+                const posting = await fetch('/article', {
+                    method: "post",
+                    headers: new Headers({
+                        "Content-Type": "application/json"
+                    }),
+                    body: JSON.stringify({  
+                        title: "A title",
+                        text: "Text of post"
+                    })
+                });
+
+                const response = await posting.json();
+                console.log(response);
+            };
+        </script>
+    </body>
+</html>
