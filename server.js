@@ -4,7 +4,7 @@ const app = express();
 const article = require('./article');
 app.use('/article', article);
 
-app.set(express.static('public'));
+app.use(express.static('public'));
 
 const PORT = 3000;
 app.listen(PORT, () => {
