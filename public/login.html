@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <input type="text" name="username" id="username">
+        <input type="password" name="password" id="password">
+        <input type="submit" onclick="auth()">
+        <script>
+            async function auth()
+            {
+                let user = document.getElementById('username').value;
+                let pass = document.getElementById('password').value;
+
+                const request = await fetch("/auth", {
+                    method: "post",
+                    headers: new Headers({
+                    "Content-Type": "application/json"
+                    }),
+                    body: JSON.stringify({
+                        username: user,
+                        password: pass
+                    })
+                });
+                const response = request.json();
+
+                console.log(response);
+            }
+        </script>
+    </body>
+</html>
