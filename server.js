@@ -1,6 +1,8 @@
 //espress init
 const express = require('express');
 const app = express();
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 //helmet middl. for protection
 const helmet = require('helmet');
 app.use(helmet());

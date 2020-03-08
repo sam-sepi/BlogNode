@@ -8,35 +8,53 @@ var jsonParser = bodyParser.json();
 const Datastore = require('nedb');
 db = new Datastore({ filename: 'articles.db', autoload: true });
 
-// required for access
-router.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-type,Authorization');
-    next();
-});
-
-const exjwt = require('express-jwt');
-const jwtMW = exjwt({
-    secret: 'mySecretKey'
-});
+const jwt = require('jsonwebtoken');
 
 router.get('/', (req, res) => 
 {
     res.json({Response: 'Received'});
 });
 
-router.post('/', jwtMW, jsonParser, (req, res) =>
+router.get('/dashboard', (req, res) => 
 {
+    if(req.headers.authorization.split(' ')[0] === 'Bearer')
+    {
+        token = req.headers.authorization.split(' ')[1];
+
+        try {
+            
+            let decoded = jwt.verify(token, 'mySecretKey');
+
+        } catch(err)
+        {
+            res.status(401).send(err);
+            res.end();
+        }
+    }
+    else 
+    {
+        res.status(401).send(err);
+        res.end();
+    }
+});
+
+/*router.post('/dashboard', jsonParser, (req, res) =>
+{
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+        return req.headers.authorization.split(' ')[1];
+    }
+
     const article = req.body;
     const timestamp = Date.now();
     article.timestamp = timestamp;
     db.insert(article);
 
     res.json(article);
-});
+});*/
 
 //handle error jwt
-router.use(function (err, req, res, next) {
+router.use(function (err, req, res, next) 
+{
     if (err.name === 'UnauthorizedError') { 
         res.status(401).send(err);
     }

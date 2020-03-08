@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 //JWT
 const jwt = require('jsonwebtoken');
+const jwt_mw = require('express-jwt');
 
 const user = {
 
@@ -16,11 +17,11 @@ router.post('/', jsonParser, (req, res, next) => {
 
     if (req.body.username == user.username && req.body.password == user.password)
     {
-        let token = jwt.sign({ id: user.id, username: user.username }, 'mySecretKey', { expiresIn: 129600 }); // Sigining the token
-        res.json({
-            sucess: true,
-            err: null,
-            token
+        let token = jwt.sign({ username: user.username }, 'mySecretKey', { expiresIn: 129600 }); // Sigining the token
+        res.cookie('jwt', token, { httpOnly: true, secure: true });
+        res.status(200).send({
+            user: user.username,
+            token: token
         });
     }
     else {
