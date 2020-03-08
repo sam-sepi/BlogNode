@@ -1,8 +1,13 @@
+//router init
 const express = require('express');
 const router = express.Router();
+//Body Parser
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
-
+//helmet!
+const helmet = require('helmet');
+router.use(helmet());
+//Db init
 const Datastore = require('nedb');
 db = new Datastore({ filename: 'articles.db', autoload: true });
 
