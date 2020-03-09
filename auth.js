@@ -18,11 +18,7 @@ router.post('/', jsonParser, (req, res, next) => {
     if (req.body.username == user.username && req.body.password == user.password)
     {
         let token = jwt.sign({ username: user.username }, 'mySecretKey', { expiresIn: 129600 }); // Sigining the token
-        res.cookie('jwt', token, { httpOnly: true, secure: true });
-        res.status(200).send({
-            user: user.username,
-            token: token
-        });
+        res.status(200).json({user: user.username, token: token});
     }
     else {
         res.status(401).json({

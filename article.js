@@ -23,7 +23,8 @@ router.get('/dashboard', (req, res) =>
 
         try {
             
-            let decoded = jwt.verify(token, 'mySecretKey');
+            let ver = jwt.verify(token, 'mySecretKey');
+            res.json(token);
 
         } catch(err)
         {
@@ -38,24 +39,11 @@ router.get('/dashboard', (req, res) =>
     }
 });
 
-/*router.post('/dashboard', jsonParser, (req, res) =>
-{
-    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-        return req.headers.authorization.split(' ')[1];
-    }
-
-    const article = req.body;
-    const timestamp = Date.now();
-    article.timestamp = timestamp;
-    db.insert(article);
-
-    res.json(article);
-});*/
-
 //handle error jwt
 router.use(function (err, req, res, next) 
 {
-    if (err.name === 'UnauthorizedError') { 
+    if (err.name === 'UnauthorizedError') 
+    { 
         res.status(401).send(err);
     }
     else {

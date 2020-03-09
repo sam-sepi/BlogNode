@@ -4,6 +4,7 @@
 
     </head>
     <body>
+        <p id="token"></p>
         <input type="text" name="username" id="username">
         <input type="password" name="password" id="password">
         <input type="submit" onclick="auth()">
@@ -22,10 +23,15 @@
                         username: user,
                         password: pass
                     })
-                });
-                const response = request.json();
+                })
+                .then(response => {
+                    response.json()
+                        .then(responseJson => {
 
-                console.log(response);
+                            window.localStorage.setItem('token', responseJson.token);
+                            document.getElementById('token').innerHTML = 'Your API KEY: ' + responseJson.token;
+                        })
+                }); 
             }
         </script>
     </body>
