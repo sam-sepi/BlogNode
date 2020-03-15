@@ -10,45 +10,46 @@ db = new Datastore({ filename: 'articles.db', autoload: true });
 
 const jwt = require('jsonwebtoken');
 
-router.get('/', (req, res) => 
-{
-    res.json({Response: 'Received'});
-});
+router.all('/', (req, res, next) => {
 
-router.get('/dashboard', (req, res) => 
-{
-    if(req.headers.authorization.split(' ')[0] === 'Bearer')
+    token = req.headers.authorization.split(' ')[1];
+
+    jwt.verify(token, 'mySecretKey', (err, decoded) => 
     {
-        token = req.headers.authorization.split(' ')[1];
-
-        try {
-            
-            let ver = jwt.verify(token, 'mySecretKey');
-            res.json(token);
-
-        } catch(err)
+        if(err) 
         {
-            res.status(401).send(err);
-            res.end();
+            res.status(401).json({sts: 401, str: 'Unauthorized', err: err.name, msg: err.message});
         }
-    }
-    else 
-    {
-        res.status(401).send(err);
-        res.end();
-    }
+        else
+        {
+            next();
+        }
+    });
 });
 
-//handle error jwt
-router.use(function (err, req, res, next) 
+router.get('/:id', (req, res) => 
 {
-    if (err.name === 'UnauthorizedError') 
-    { 
-        res.status(401).send(err);
-    }
-    else {
-        next(err);
-    }
+    let id = req.params.id;
+
+    db.find({_id: id}, (err, docs)  =>
+    {
+        if(err) res.json({dberr: err}).end();
+
+        res.status(200).json({sts: 200, str: 'Authorized', docs: docs});
+    });
+});
+
+router.post('/', jsonParser, (req, res) => 
+{ 
+    let article = req.body;
+    let timestamp = Date.now();
+    article.timestamp = timestamp;
+
+    db.insert({article: article.title, text: article.text, timestamp: article.timestamp}, (err, newDocs) => 
+    {
+        if(err) { res.status.apply(500).json({dberr: err}); }
+        res.status(200).json({str: 'ID new article ' + newDocs._id});
+    });
 });
 
 module.exports = router;

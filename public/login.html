@@ -23,15 +23,19 @@
                         username: user,
                         password: pass
                     })
-                })
-                .then(response => {
-                    response.json()
-                        .then(responseJson => {
+                });
 
-                            window.localStorage.setItem('token', responseJson.token);
-                            document.getElementById('token').innerHTML = 'Your API KEY: ' + responseJson.token;
-                        })
-                }); 
+                const response = await request.json();
+
+                if(response.auth == 'ok')
+                {
+                    window.localStorage.setItem('token', response.token);
+                    document.getElementById('token').innerHTML = 'API KEY in storage';
+                }
+                else
+                {
+                    document.getElementById('token').innerHTML = 'Unauthorized';
+                }
             }
         </script>
     </body>

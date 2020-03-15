@@ -5,40 +5,57 @@
     </head>
     <body>
 
-        <p>HELLO!</p>
+        <input type="text" placeholder="Title" id="title">
+        <textarea id="text"></textarea>
+        <input type="submit" value="Write" onclick="writeArticle();">
 
         <script>
-            /*writePost();
-
-            async function writePost()
-            {
-                const posting = await fetch('/article', {
-                    method: "post",
-                    headers: new Headers({
-                        "Content-Type": "application/json"
-                    }),
-                    body: JSON.stringify({  
-                        title: "A title",
-                        text: "Text of post"
-                    })
-                });
-
-                const response = await posting.json();
-                console.log(response);
-            };*/
 
             testJWT();
 
             async function testJWT()
             {
                 let jwt = localStorage.getItem("token");
-                const request = await fetch('/article/dashboard', {
+                
+                let request = await fetch('/article/IPwxkzv3sGjQwRQF', {
                     method: "get",
                     headers: new Headers({
                         'Authorization': 'Bearer ' + jwt
                     })
                 });
-                const response = await request.json();
+
+                let response = await request.json();
+
+                if(response.str == 'Authorized') 
+                {
+                    
+                } else
+                {
+                    localStorage.removeItem("token");
+                    //window.location.replace("login.html");
+                }
+            }
+
+            async function writeArticle()
+            {
+                let jwt = localStorage.getItem("token");
+                let title = document.getElementById('title').value;
+                let text = document.getElementById('text').value;
+
+                let request = await fetch('/article', {
+                    method: "post",
+                    headers: new Headers({
+                        'Authorization': 'Bearer ' + jwt,
+                        "Content-Type": "application/json"
+                    }),
+                    body: JSON.stringify({
+                        title: title,
+                        text: text
+                    })
+                });
+
+                let response = await request.json();
+
                 console.log(response);
             }
         </script>
