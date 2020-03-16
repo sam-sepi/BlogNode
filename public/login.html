@@ -30,7 +30,7 @@
                 if(response.auth == 'ok')
                 {
                     window.localStorage.setItem('token', response.token);
-                    document.getElementById('token').innerHTML = 'API KEY in storage';
+                    window.location.replace("dashboard.html");
                 }
                 else
                 {

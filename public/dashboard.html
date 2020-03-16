@@ -9,15 +9,17 @@
         <textarea id="text"></textarea>
         <input type="submit" value="Write" onclick="writeArticle();">
 
+        <div id="content"></div>
+
         <script>
 
-            testJWT();
+            findCollection();
 
-            async function testJWT()
+            async function findCollection()
             {
                 let jwt = localStorage.getItem("token");
                 
-                let request = await fetch('/article/IPwxkzv3sGjQwRQF', {
+                let request = await fetch('/article', {
                     method: "get",
                     headers: new Headers({
                         'Authorization': 'Bearer ' + jwt
@@ -28,11 +30,20 @@
 
                 if(response.str == 'Authorized') 
                 {
-                    
+                    let content = document.getElementById('content');
+                    let newlink = document.createElement('a');
+
+                    for(i = 0; i < response.docs.length; i++)
+                    {
+                        let newlink = document.createElement('a');
+                        content.appendChild(newlink);
+                        newlink.setAttribute('href', 'handle.html/' + response.docs[i]._id);
+                        newlink.innerHTML = response.docs[i].article + '<br>';
+                    }
+
                 } else
                 {
-                    localStorage.removeItem("token");
-                    //window.location.replace("login.html");
+                    window.location.replace("login.html");
                 }
             }
 

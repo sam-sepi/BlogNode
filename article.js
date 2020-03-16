@@ -27,11 +27,9 @@ router.all('/', (req, res, next) => {
     });
 });
 
-router.get('/:id', (req, res) => 
+router.get('/', (req, res) => 
 {
-    let id = req.params.id;
-
-    db.find({_id: id}, (err, docs)  =>
+    db.find({ }, (err, docs)  =>
     {
         if(err) res.json({dberr: err}).end();
 
@@ -49,6 +47,32 @@ router.post('/', jsonParser, (req, res) =>
     {
         if(err) { res.status.apply(500).json({dberr: err}); }
         res.status(200).json({str: 'ID new article ' + newDocs._id});
+    });
+});
+
+router.put('/:id', (req, res) => 
+{
+    let id = req.params.id;
+    let article = req.body;
+    let timestamp = Date.now();
+
+    db.update({ _id: id}, { title: article.title, text: article.text }, (err, updDoc) => 
+    {
+        if(err) { res.status.apply(500).json({dberr: err}); }
+
+        res.status(200).json({ str: 'ID updated ' + updDoc._id});
+    })
+});
+
+router.delete('/:id', (req, res) => 
+{
+    let id = req.params.id;
+
+    db.remove({ _id: id }, {}, function (err, numRemoved) 
+    {
+        if(err) { res.status.apply(500).json({dberr: err}); }
+
+        res.status(200).json({ str: 'ID removed ' + id });
     });
 });
 

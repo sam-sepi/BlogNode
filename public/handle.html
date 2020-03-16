@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+
+        <div id="content"></div>
+
+        <script>
+            let parsedUrl = new URL(window.location.href);
+            let urlparam = parsedUrl.searchParams.get("id");
+            console.log(urlparam);
+        </script>
+    </body>
+</html>
