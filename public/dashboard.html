@@ -5,9 +5,10 @@
     </head>
     <body>
 
-        <input type="text" placeholder="Title" id="title">
+        <input type="text" placeholder="title" id="title">
         <textarea id="text"></textarea>
-        <input type="submit" value="Write" onclick="writeArticle();">
+        <input type="text" id="id_article">
+        <input type="submit" value="New Post" onclick="writeArticle();">
 
         <div id="content"></div>
 
@@ -31,14 +32,14 @@
                 if(response.str == 'Authorized') 
                 {
                     let content = document.getElementById('content');
-                    let newlink = document.createElement('a');
 
                     for(i = 0; i < response.docs.length; i++)
                     {
-                        let newlink = document.createElement('a');
-                        content.appendChild(newlink);
-                        newlink.setAttribute('href', 'handle.html/' + response.docs[i]._id);
-                        newlink.innerHTML = response.docs[i].article + '<br>';
+                        let sub = document.createElement('a');
+                        content.appendChild(sub);
+                        sub.setAttribute('href', 'handle.html?id=' + response.docs[i]._id);
+                        sub.setAttribute('class', 'title');
+                        sub.innerHTML = response.docs[i].title;
                     }
 
                 } else
@@ -47,7 +48,7 @@
                 }
             }
 
-            async function writeArticle()
+            /*async function writeArticle()
             {
                 let jwt = localStorage.getItem("token");
                 let title = document.getElementById('title').value;
@@ -68,7 +69,8 @@
                 let response = await request.json();
 
                 console.log(response);
-            }
+            }*/
+            
         </script>
     </body>
 </html>

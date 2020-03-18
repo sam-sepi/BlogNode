@@ -5,12 +5,84 @@
     </head>
     <body>
 
-        <div id="content"></div>
+        <div id="content">
+            <input type="text" id="title">
+            <textarea id="text"></textarea>
+            <input type="submit" id="update" value="Update" onclick="update()">
+            <input type="submit" id="delete" value="Delete" onclick="deleteArticle()">
+        </div>
 
         <script>
-            let parsedUrl = new URL(window.location.href);
-            let urlparam = parsedUrl.searchParams.get("id");
-            console.log(urlparam);
+            
+            getArticle();
+
+            async function getArticle() {
+
+                let jwt = localStorage.getItem("token");
+                let parsedUrl = (new URL(document.location)).searchParams;
+                let urlparam = parsedUrl.get("id");
+
+                let request = await fetch('/article?id=' + urlparam, 
+                {
+                    method: "get",
+                    headers: new Headers({
+                        'Authorization': 'Bearer ' + jwt
+                    })
+                });
+
+                let response = await request.json();
+
+                if(response.str == 'Authorized') 
+                {
+                    document.getElementById('title').value = response.docs[0].title;
+                    document.getElementById('text').value = response.docs[0].text;
+                }
+            }
+
+            async function update()
+            {
+                let jwt = localStorage.getItem("token");
+                let parsedUrl = (new URL(document.location)).searchParams;
+                let urlparam = parsedUrl.get("id");
+                let title = document.getElementById('title').value;
+                let text = document.getElementById('text').value;
+
+                let request = await fetch('/article?id=' + urlparam, 
+                {
+                    method: "put",
+                    headers: new Headers({
+                        'Authorization': 'Bearer ' + jwt,
+                        "Content-Type": "application/json"
+                    }),
+                    body: JSON.stringify({
+                        title: title,
+                        text: text
+                    })
+                });
+
+                let response = await request.json();
+
+                console.log(response);
+            }
+
+            async function deleteArticle()
+            {
+                let jwt = localStorage.getItem("token");
+                let parsedUrl = (new URL(document.location)).searchParams;
+                let urlparam = parsedUrl.get("id");
+
+                let request = await fetch('/article?id=' + urlparam, 
+                {
+                    method: "delete",
+                    headers: new Headers({
+                        'Authorization': 'Bearer ' + jwt
+                    })
+                });
+
+                let response = await request.json();
+
+                console.log(response);
+            }
         </script>
     </body>
 </html>
