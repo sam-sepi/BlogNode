@@ -9,7 +9,6 @@
 
         <input type="text" placeholder="title" id="title">
         <textarea id="text"></textarea>
-        <input type="text" id="id_article">
         <input type="submit" value="New Post" onclick="writeArticle();">
 
         <h3>Old Post</h3>
@@ -40,7 +39,7 @@
                     {
                         let sub = document.createElement('a');
                         content.appendChild(sub);
-                        sub.setAttribute('href', 'handle.html?id=' + response.docs[i]._id + '<br>');
+                        sub.setAttribute('href', 'handle.html?id=' + response.docs[i]._id);
                         sub.setAttribute('class', 'title');
                         sub.innerHTML = response.docs[i].title;
                     }
