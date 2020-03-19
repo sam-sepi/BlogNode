@@ -6,12 +6,18 @@ app.use(cookieParser());
 //helmet middl. for protection
 const helmet = require('helmet');
 app.use(helmet());
+//Db init
+const Datastore = require('nedb');
+db = new Datastore({ filename: 'articles.db', autoload: true });
 //miniApp
 const article = require('./article');
 app.use('/article', article);
 
 const auth = require('./auth');
 app.use('/auth', auth);
+
+const api = require('./api');
+app.use('/api', api);
 
 app.use(express.static('public'));
 

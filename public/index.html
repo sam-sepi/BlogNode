@@ -11,7 +11,7 @@
 
             async function readAll()
             {
-                const read = await fetch('/article');
+                const read = await fetch('/api');
                 const readToJson = await read.json();
 
                 console.log(readToJson);

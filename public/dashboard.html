@@ -5,11 +5,14 @@
     </head>
     <body>
 
+        <h3>New Post</h3>
+
         <input type="text" placeholder="title" id="title">
         <textarea id="text"></textarea>
         <input type="text" id="id_article">
         <input type="submit" value="New Post" onclick="writeArticle();">
 
+        <h3>Old Post</h3>
         <div id="content"></div>
 
         <script>
@@ -37,7 +40,7 @@
                     {
                         let sub = document.createElement('a');
                         content.appendChild(sub);
-                        sub.setAttribute('href', 'handle.html?id=' + response.docs[i]._id);
+                        sub.setAttribute('href', 'handle.html?id=' + response.docs[i]._id + '<br>');
                         sub.setAttribute('class', 'title');
                         sub.innerHTML = response.docs[i].title;
                     }
@@ -48,7 +51,7 @@
                 }
             }
 
-            /*async function writeArticle()
+            async function writeArticle()
             {
                 let jwt = localStorage.getItem("token");
                 let title = document.getElementById('title').value;
@@ -69,7 +72,7 @@
                 let response = await request.json();
 
                 console.log(response);
-            }*/
+            }
             
         </script>
     </body>

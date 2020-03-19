@@ -4,9 +4,6 @@ const router = express.Router();
 //Body Parser
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
-//Db init
-const Datastore = require('nedb');
-db = new Datastore({ filename: 'articles.db', autoload: true });
 
 const jwt = require('jsonwebtoken');
 
