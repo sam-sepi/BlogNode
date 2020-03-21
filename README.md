@@ -35,7 +35,7 @@ git clone https://github.com/sam-sepi/BlogNode.git
 
 ## Authors
 
-Sam Sepi - s.sepi.84@gmail.com
+Sam Sepi - sam.sepi.84@gmail.com
 
 ## License
 
